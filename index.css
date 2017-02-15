@@ -1,0 +1,36 @@
+﻿
+body{}
+
+.mis_s{ height:306px; margin-top:22px; overflow:hidden;}
+
+.jypx{ width:257px; height:306px; overflow:hidden;}
+.mid_z{ width:253px; margin-left:10px; overflow:hidden;}
+.kqfd{ width:253px; height:204px; overflow:hidden;}
+.dl{ width:253px; height:94px; margin-top:10px; overflow:hidden;}
+
+.tzgg{ width:650px; overflow:hidden;}
+.tzgg h2{ margin-bottom:11px;}
+.mid_x{ padding-top:20px; overflow:hidden;}
+
+/*行业资讯*/
+.hyzx, .sgwh{  overflow:hidden;}
+.hyzx h2, .sgwh h2, .zcfg h2, .tzgg h2{font-size: 20px; height:30px; line-height:30px;margin-bottom: 11px;background: -webkit-linear-gradient(left,rgba(14,138,198,0.22),rgba(255,255,255,1));background: -o-linear-gradient(right,rgba(14,138,198,0.22),rgba(255,255,255,1));background: -moz-linear-gradient(right,rgba(14,138,198,0.22),rgba(255,255,255,1));background: linear-gradient(to right, rgba(14,138,198,0.22), rgba(255,255,255,1));}
+.hyzx h2 em, .sgwh h2 em, .zcfg h2 em, .tzgg h2 em{ float:left; display:block;border-left: 5px solid #3dafe3;padding-left: 40px;color: #0e8ac6;background-color: transparent;width: 139px;background-repeat: no-repeat;background-position: 8px center;font-weight: bold;}
+.hyzx h2 span, .sgwh h2 span, .zcfg h2 span, .tzgg h2 span{ float:right; display:inline;font-size: 14px; }
+.hyzx h2 span a, .sgwh h2 span a, .zcfg h2 span a, .tzgg h2 span a{ color: #333; }
+
+.hyzx_s{ height:130px; overflow:hidden;}
+.hyzx_s img{ width:149px; height:97px; margin:20px 15px 15px 0; float:left; display:inline; overflow:hidden;}
+.hyzx_s p{ line-height:35px; margin-top:15px; font-size:14px; color:#313131; text-indent:24px;}
+.hyzx_s p a{ color:#313131;}
+
+.hyzx_x{ overflow:hidden;}
+.hyzx_x ul li{ line-height:28px; background:url(../images/img_07.jpg) no-repeat left center; font-size:14px;color: #696b76;}
+.hyzx_x ul li a{color: #696b76;}
+.hyzx_x ul li a:hover{color: #159bda;}
+.hyzx_x ul li em{font-style: normal;color: #f0f0f0;margin-right: 12px;padding-left: 13px;}
+.hyzx_x ul li span{ float:right; display:inline;font-size: 12px;color: #838383;}
+
+.zcfg{ width:375px; overflow:hidden;}
+
+

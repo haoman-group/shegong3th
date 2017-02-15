@@ -1,0 +1,408 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0030)http://192.168.0.45:8081/oned/ -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>社会工作者再教育平台</title>
+<link href="common.css" rel="stylesheet" type="text/css">
+<link href="index.css" rel="stylesheet" type="text/css">
+
+<!--banner轮播-->
+<script type="text/javascript" src="jquery-1.8.0.min.js"></script>
+<script src="layer.min.js"></script>
+<link rel="stylesheet" href="layer.css" id="layui_layer_skinlayercss">
+<script type="text/javascript" src="jquery.event.drag-1.5.min.js"></script>
+<script type="text/javascript" src="jquery.touchSlider.js"></script>
+<script type="text/javascript" src="engine.js"></script>
+<script type="text/javascript" src="Noticetable_Query_YCH_DWR.js"></script>
+<script type="text/javascript" src="UserInfo_Query_YCH_DWR.js"></script>
+<script type="text/javascript" src="Userinfo_Update_FC_DWR.js"></script>
+<script type="text/javascript" src="Information_Query_YCH_DWR.js"></script>
+<script type="text/javascript" src="Information_Query_FC_DWR.js"></script>
+<script type="text/javascript" src="Course_Query_YCH_DWR.js"></script>
+<script src="utils.js"></script>
+
+<script>
+ 		//一个汉字相当于2个字符
+    		function getNewTitle(str, len){
+        	var char_length = 0;
+        	var string_length = 0;     
+        	for (var i = 0; i < str.length; i++){
+	            var son_str = str.charAt(i);
+	            encodeURI(son_str).length > 2 ? string_length += 2 : char_length += 1;	 
+	            var strchar_length = string_length+char_length;
+        		if (strchar_length > len){	
+       			
+	                return str.substring(0, i)+"...";
+	            	}
+        		
+	        	}	
+        		if(strchar_length<=len){
+        			return str;
+        		}
+	            	           	
+       		}	
+ </script>
+<script>
+	//退出登录
+	function quitLogin(){
+		Userinfo_Update_FC_DWR.quitLogin(function(msg){
+			if(msg){
+				window.location.href='login.html';
+			}		
+		});		
+	}
+
+ 	Noticetable_Query_YCH_DWR.queryIndex(1,7,'',function(msg){
+ 		//alert(JSON.stringify(msg));	
+ 		msg = msg.rows;
+ 		$.each(msg,function(index,value){ 	
+ 			var urlMsg20160522fc = '<li><span>'+value.releaseTime.substring(0,11)+'</span><a href=xxzs_notice.html?id='+value.id+'&type=tzgg>';
+ 			var title20160522fc  = getNewTitle(value.title,30)+'</a></li>';	 		
+	 			$('#xxzs_20160514ych').append(urlMsg20160522fc+title20160522fc);	 	 		
+ 		});
+ 	});
+ 	//查询是否登录
+ 	UserInfo_Query_YCH_DWR.queryIsLogin(function(result){
+ 		var now = new Date(); 
+		var nowStr = now.pattern("yyyy-MM-dd hh:mm EEE"); 
+ 		if(result.user != null){
+ 			//登录成功		
+ 			$('#head_20160519ych').append('<p><span>欢迎 :         '+ result.user +'，<a href="grzx_personalData.html">个人中心  &nbsp;</a><a href= "javascript:quitLogin()">退出</a></span>'+ nowStr +'</p>');
+ 			$('#loginButton20160620ych').attr("href","grzx_personalData.html");
+ 		}else{
+ 			$('#loginButton20160620ych').attr("href","login.html");
+ 			$('#head_20160519ych').append('<p><span><a href="login.html">登录</a></span>'+ nowStr +'</p>');			
+ 		}
+ 		
+ 	});
+ 	//加载首页资讯信息（Information）
+ 	
+ 	Information_Query_YCH_DWR.queryOfPage(1,8,function(data){
+ 	 	var syzx = new Array();
+		var hyzx = new Array();
+		var sgwh = new Array();
+		var zcfg = new Array();
+		$.each(data,function(index,value){
+			if(value.fid == 0) syzx.push(value);
+			if(value.fid == 1) hyzx.push(value);
+			if(value.fid == 2) sgwh.push(value);
+			if(value.fid == 3) zcfg.push(value);
+		});
+		//首页资讯头部
+		
+		$.each(syzx,function(index,value){		
+			if(value.id==1){
+				$('#sgzx_20160529fc').html(value.informTitle);
+			}else if(value.id==2){
+				$('#sgll_20160529fc').html(value.informTitle);
+			}else if(value.id==3){
+				$('#zcfg_20160529fc').html(value.informTitle);
+			}  
+ 		});
+
+		//行业资讯数据
+		
+ 		$.each(hyzx,function(index,value){
+	 		$('#hyzxTitle20160523ych').append('<li><span>'+value.releaseTime.substring(0,10)+'</span><a href=xxzs_notice.html?id='+value.id+'&type=sgzx>'+getNewTitle(value.informTitle,30)+'</a></li>');
+	 		
+ 		});
+ 		//社工文化数据
+ 		$.each(sgwh,function(index,value){
+	 		$('#sgwhTitle20160523ych').append('<li><span>'+value.releaseTime.substring(0,10)+'</span><a href=xxzs_notice.html?id='+value.id+'&type=sgll>'+getNewTitle(value.informTitle,30)+'</a></li>');
+	 		
+ 		});
+ 		//政策法规数据		
+ 		$.each(zcfg,function(index,value){
+	 		$('#zcfgTitle20160523ych').append('<li><span>'+value.releaseTime.substring(0,10)+'</span><a href=xxzs_notice.html?id='+value.id+'&type=zcfg>'+getNewTitle(value.informTitle,30)+'</a></li>');
+	 		
+ 		});
+ 	});
+ 	
+ 	//首页推荐课程（继续教育）
+ 	Course_Query_YCH_DWR.queryIndexCourses(1,5,"",function(msg){ 
+ 		courses = msg.rows;
+	 	$.each(courses,function(index,value){	 	
+	 		$('#jxjy_indexShow_course').append('<li><span>'+value.startTime+'</span><span style="margin-right:65px;">'+value.speakerObj.name+'</span><a href="courseInfo.html?id='+value.id+'">'+value.courseName+'</a></li>');
+	 	});
+ 	}); 				
+ </script> 
+<script type="text/javascript">
+
+//轮播图
+$(document).ready(function(){
+
+	$(".main_visual").hover(function(){
+		$("#btn_prev,#btn_next").fadeIn()
+	},function(){
+		$("#btn_prev,#btn_next").fadeOut() 
+	});
+	
+	$dragBln = false;
+	
+	$(".main_image").touchSlider({
+		flexible : true,
+		speed : 200,
+		btn_prev : $("#btn_prev"),
+		btn_next : $("#btn_next"),
+		paging : $(".flicking_con a"),
+		counter : function (e){
+			$(".flicking_con a").removeClass("on").eq(e.current-1).addClass("on");
+		}
+	});
+	
+	$(".main_image").bind("mousedown", function() {
+		$dragBln = false;
+	});
+	
+	$(".main_image").bind("dragstart", function() {
+		$dragBln = true;
+	});
+	
+	$(".main_image a").click(function(){
+		if($dragBln) {
+			return false;
+		}
+	});
+	
+	timer = setInterval(function(){
+		$("#btn_next").click();
+	}, 5000);
+	
+	$(".main_visual").hover(function(){
+		clearInterval(timer);
+	},function(){
+		timer = setInterval(function(){
+			$("#btn_next").click();
+		},5000);
+	});
+	
+	$(".main_image").bind("touchstart",function(){
+		clearInterval(timer);
+	}).bind("touchend", function(){
+		timer = setInterval(function(){
+			$("#btn_next").click();
+		}, 5000);
+	});
+	
+});
+</script>
+
+<script type="text/javascript" src="lyn.js"></script>
+<style id="style-1-cropbar-clipper">/* Copyright 2014 Evernote Corporation. All rights reserved. */
+.en-markup-crop-options {
+    top: 18px !important;
+    left: 50% !important;
+    margin-left: -100px !important;
+    width: 200px !important;
+    border: 2px rgba(255,255,255,.38) solid !important;
+    border-radius: 4px !important;
+}
+
+.en-markup-crop-options div div:first-of-type {
+    margin-left: 0px !important;
+}
+</style></head>
+<body>
+<div class="header">
+     <div class="width" id="head_20160519ych">
+ 
+          
+     <p><span><a href="http://192.168.0.45:8081/oned/login.html">登录</a></span>2017-02-13 10:16 星期一</p></div>     
+</div>
+<div class="bgfff">
+	 <div class="wraper">
+		  <div class="search-2015"> 
+               <a href="http://192.168.0.45:8081/oned/index.html" class="logo fl"><img src="img_01.png" alt=""></a>
+		       <form id="form_20160529fc" method="post">
+                     <div class="soso fr">
+                          <div class="soso-text clearfix">
+                               <dl class="l-select fl">
+                               
+                                  <dt class="l-selectdt">通知公告<i></i></dt>
+                                   <dd id="selectdd_20160619fc" class="l-selectdd" style="display:none;">                                  		
+                                       <p>通知公告</p>
+                                       <p>社工资讯</p>
+                                       <p>社工理论</p>
+                                       <p>政策法规</p>                                      
+                                   </dd>
+                               </dl>
+                               <input class="l-txt fl" id="ssuo" placeholder="请输入关键词" type="text">
+                               <input class="l-bth-s fl" value="搜索" type="button" onclick="chick()" style="cursor:pointer;">
+                          </div>
+                     </div>
+		       </form>
+				
+               <div class="clear"></div>
+          </div>
+	</div>
+</div>  
+<div class="main_visual">
+	<div class="flicking_con">
+		<a href="http://192.168.0.45:8081/oned/#" class="">1</a>
+		<a href="http://192.168.0.45:8081/oned/#" class="">2</a>
+		<a href="http://192.168.0.45:8081/oned/#" class="on">3</a>
+	</div>
+	<div class="main_image">
+		<ul style="width: 1583px; overflow: visible;">
+			<li style="float: none; display: block; position: absolute; top: 0px; left: -3166px; width: 1583px;"><span class="img_1"></span></li>
+			<li style="float: none; display: block; position: absolute; top: 0px; left: -1583px; width: 1583px;"><span class="img_2"></span></li>
+			<li style="float: none; display: block; position: absolute; top: 0px; left: 0px; width: 1583px;"><span class="img_3"></span></li>
+		</ul>
+		<a href="javascript:;" id="btn_prev" style="width: 1583px; overflow: visible; display: none;"></a>
+		<a href="javascript:;" id="btn_next" style="width: 1583px; overflow: visible; display: none;"></a>
+	</div>
+</div>
+<div class="mis_s width">
+     <div class="jypx fl">
+          <a href="http://192.168.0.45:8081/oned/contiEdu.html"><img src="img_03.jpg" alt=""></a>
+     </div>
+     <div class="mid_z fl">
+          <div class="kqfd">
+               <a href="http://192.168.0.45:8081/oned/kqfd_beforeExamCoach.html" onclick="layer.alert(&#39;内容筹备中，敬请期待&#39;);return false;"><img src="img_04.jpg" alt=""></a>
+          </div>
+          <div class="dl">     
+               <a id="loginButton20160620ych" href="http://192.168.0.45:8081/oned/login.html"><img src="img_05.jpg" alt=""></a>
+          </div>     
+     </div>
+     
+     <div class="tzgg fr">
+          <h2><span><a href="http://192.168.0.45:8081/oned/xxzs_noticeMore.html?type=tzgg">更多>></a></span><em style="background-image: url(2.png)">通知公告</em></h2>
+          <div class="hyzx_x">
+               <ul id="xxzs_20160514ych">
+                 
+              <li><em>●</em><span>2016-12-20 </span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad5919fd7701591a23549b0003&amp;type=tzgg">1220新添加测试通知</a></li><li><em>●</em><span>2016-12-19 </span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad5915c0a50159163093340019&amp;type=tzgg">测试需要第三方</a></li><li><em>●</em><span>2016-12-19 </span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad5915c0a501591630758a0018&amp;type=tzgg">测试需要</a></li><li><em>●</em><span>2016-12-19 </span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad5915c0a501591618bd66000c&amp;type=tzgg">这是一个名字很长很长的公告测试...</a></li><li><em>●</em><span>2016-12-19 </span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad5915c0a501591611b142000a&amp;type=tzgg">这是一个名字很长很长的公告测试...</a></li><li><em>●</em><span>2016-12-19 </span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad5914b59e0159153563400005&amp;type=tzgg">测试</a></li><li><em>●</em><span>2016-08-09 </span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=40288039566ed9e001566edd1de60001&amp;type=tzgg">关于国庆节放假的通知</a></li><li><em>●</em><span>2016-08-09 </span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=40288039566ed9e001566edd1de60001&amp;type=tzgg">关于国庆节放假的通知</a></li><li><em>●</em><span>2016-12-19 </span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad5914b59e0159153563400005&amp;type=tzgg">测试</a></li></ul>
+          </div>
+     </div>
+     <div class="clear"></div>
+</div>
+<div class="mid_x" style="margin: 0 auto;width: 1190px;">
+<div class="hyzx fl" style="width: 520px;float: left;">
+<h2><span><a href="http://192.168.0.45:8081/oned/xxzs_noticeMore.html?type=tzgg">更多>></a></span><em style="background-image: url(3.png)">继续教育</em></h2>
+
+	<div class="hyzx_x">
+		<ul id="jxjy_indexShow_course">
+			 
+		<li><em>●</em><span>2017-01-16</span><a href="http://192.168.0.45:8081/oned/courseInfo.html?id=402880ad596966360159a54570e70003">分蓄势待发</a></li><li><em>●</em><span>2016-12-27</span><a href="http://192.168.0.45:8081/oned/courseInfo.html?id=402880ad593f525201593f578f8c0000">测试用</a></li><li><em>●</em><span>2016-07-01</span><a href="http://192.168.0.45:8081/oned/courseInfo.html?id=4028803955a49b2f0155a4d2f4f80003">药物滥用社会工作</a></li><li><em>●</em><span>2016-07-01</span><a href="http://192.168.0.45:8081/oned/courseInfo.html?id=4028803955a49b2f0155a4d2a3510002">社区矫正社工工作</a></li><li><em>●</em><span>2016-07-01</span><a href="http://192.168.0.45:8081/oned/courseInfo.html?id=4028803955a49b2f0155a4d2525c0001">老年社会工作</a></li></ul>
+		
+	</div>
+</div>
+<div class="hyzx fl" style="width: 650px;float: right;min-height: 222px;">
+	<h2><span><a href="http://192.168.0.45:8081/oned/xxzs_noticeMore.html?type=tzgg">更多>></a></span><em style="background-image: url(4.png)">考前培训</em></h2>
+	<div class="hyzx_x">
+		<ul>
+			<!-- <li>测试课程1</li>
+			<li>测试课程1</li>
+			<li>测试课程1</li>
+			<li>测试课程1</li> -->
+		</ul>
+		
+	</div>
+</div>
+</div> 
+<div class="clear"></div> 
+
+
+<div class="mid_x">
+     <div class="width" style="margin-bottom: 135px;">
+         <div class="hyzx fl" style="width: 375px;margin-right:34px;">
+              <h2><span><a href="http://192.168.0.45:8081/oned/xxzs_noticeMore.html?type=sgzx">更多>></a></span><em id="sgzx_20160529fc" style="background-image: url(5.png)">社工资讯</em></h2>
+              <div class="clear"></div>
+              <div class="hyzx_x">
+              	<ul id="hyzxTitle20160523ych"><li><em>●</em><span>2016-12-05</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad58bd8dd90158cdd9b3f60007&amp;type=sgzx">大按时啊大叔爱的按时的按时</a></li><li><em>●</em><span>2016-11-28</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad589957200158a8fd96a80069&amp;type=sgzx">的说法都是十分</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576c038830017&amp;type=sgzx">成年孤儿的社会安置，路在何方？</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576bfce9e0016&amp;type=sgzx">以“三化”促社会工作转型发展</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576bf10d40015&amp;type=sgzx">怎么看待志愿服务记录证明</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576be89c90014&amp;type=sgzx">做社工授人以渔</a></li></ul>
+              </div>
+         </div>
+         <div class="sgwh fl" style="width: 390px;">
+              <h2><span><a href="http://192.168.0.45:8081/oned/xxzs_noticeMore.html?type=sgll">更多>></a></span><em id="sgll_20160529fc" style="background-image: url(6.png)">社工理论</em></h2>
+              <div class="clear"></div>
+              <div class="hyzx_x">
+                   <ul id="sgwhTitle20160523ych">
+                  <li><em>●</em><span>2016-12-12</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad58f1f0af0158f20f34aa0003&amp;type=sgll">是非得失的发送到发送到是爱上的...</a></li><li><em>●</em><span>2016-12-12</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad58f1f0af0158f20d2ff10002&amp;type=sgll">测试3</a></li><li><em>●</em><span>2016-12-12</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad58f1f0af0158f20cd2220001&amp;type=sgll">测试2</a></li><li><em>●</em><span>2016-12-12</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad58f1f0af0158f20c5d8e0000&amp;type=sgll">测试1</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576bb1b0d000f&amp;type=sgll">民政干部要带头学习社会工作</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576bab7e4000e&amp;type=sgll">以社会工作推进社会建设</a></li></ul>
+              </div>
+         </div>
+         <div class="zcfg fr" style="width: 360px;">
+              <h2><span><a href="http://192.168.0.45:8081/oned/xxzs_noticeMore.html?type=zcfg">更多>></a></span><em id="zcfg_20160529fc" style="background-image: url(7.png)">政策法规</em></h2>
+              <div class="clear"></div>
+              <div class="hyzx_x">
+                   <ul id="zcfgTitle20160523ych">
+                       
+                   <li><em>●</em><span>2016-12-05</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402880ad58bd8dd90158cedeb95f000a&amp;type=zcfg">1205测试政策法规</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576b696400008&amp;type=zcfg">民政部关于促进慈善类民间组织发...</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576b5beba0007&amp;type=zcfg">关于加强社会工作专业人才队伍建...</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576b2b5ff0005&amp;type=zcfg">民政部关于加快推进灾害社会工作...</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576b194100004&amp;type=zcfg">民政部关于进一步加快推进民办社...</a></li><li><em>●</em><span>2016-06-22</span><a href="http://192.168.0.45:8081/oned/xxzs_notice.html?id=402889e7557684ee015576af87760003&amp;type=zcfg">中共中央、国务院印发《关于加强...</a></li></ul>
+              </div>
+         </div>
+         <div class="clear"></div>  
+     </div>   
+</div>
+<div class="bottom">
+     <div class="width">
+          <div class="bot_l fl">
+               <p><a href="http://192.168.0.45:8081/oned/">关于我们</a>  |  <a href="http://192.168.0.45:8081/oned/messageList.html">留言列表</a><br>
+                  <span>联系方式：客服电话：400-XXX-XXXX</span><br>
+                  <span>地址：XXXXXXXXXXXXXXXXXXXXX<br></span>
+                  <span>传真：XXX-XXXXXXX&nbsp;&nbsp;&nbsp;&nbsp;邮箱：XXXXXXXXXXX投诉：XXX-XXXXXXX</span>
+               </p>
+          </div>
+          <div class="bot_r fr">
+             <!--   <img src="images/img_08.jpg" alt="" /> -->
+          </div>
+          
+          <div class="clear"></div>
+     </div>           
+</div>
+<div class="footer">
+     <p>Copyright © 2016-2020 XXXXXX.com 社会工作者<label ondblclick="adminLogin()">再教育</label>平台版权所有</p>
+</div>
+<script type="text/javascript">
+//搜索下拉框动态显示
+var title1 = "无标题";
+var title2 = "无标题";
+var title3 = "无标题";
+Information_Query_FC_DWR.queryIndex(1,3,"",function(data){
+	titleList = data.title;
+	$.each(titleList,function(index,value){		
+		 title1  = titleList[0].informTitle;
+		 title2  = titleList[1].informTitle;
+		 title3  = titleList[2].informTitle;
+	});	
+
+
+$("#selectdd_20160619fc p:eq(1)").text(title1);
+$("#selectdd_20160619fc p:eq(2)").text(title2);
+$("#selectdd_20160619fc p:eq(3)").text(title3);
+
+});	
+
+		function chick(){
+			
+			var noq = $.trim($("#ssuo").val());
+			var selectValue = $(".l-selectdt").text();
+			if(selectValue=="通知公告"){				
+				if(noq!=null){				
+					window.location.href="xxzs_noticeMore.html?type=tzgg&str="+noq;
+				}else{
+					window.location.href="xxzs_noticeMore.html?type=tzgg";
+				} 
+			}else if(selectValue==title1){				
+				if(noq!=null){
+					window.location.href="xxzs_noticeMore.html?type=sgzx&str="+noq;
+				}else{
+					window.location.href="xxzs_noticeMore.html?type=sgzx";
+				}
+			}else if(selectValue==title2){				
+				if(noq!=null){
+					window.location.href="xxzs_noticeMore.html?type=sgll&str="+noq;
+				}else{
+					window.location.href="xxzs_noticeMore.html?type=sgll";
+				}
+			}else if(selectValue==title3){
+				if(noq!=null){
+					window.location.href="xxzs_noticeMore.html?type=zcfg&str="+noq;
+				}else{
+					window.location.href="xxzs_noticeMore.html?type=zcfg";
+				}
+			}						
+		}
+
+ </script>
+<script>function adminLogin(){location.href='managers/login.html';}</script> 
+
+
+</body></html>
